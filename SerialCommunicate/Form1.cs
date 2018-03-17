@@ -69,7 +69,6 @@ namespace SerialCommunicate
                     Buffer = "COM" + i.ToString();
                     MyPort.PortName = Buffer;
                     MyPort.Open();                                      //如果失败，后面的代码不会执行
-                                                                        // MyString[count] = Buffer;
                     MyBox.Items.Add(Buffer);                            //打开成功，添加至下俩列表
                     MyPort.Close();                                     //关闭
                 }
@@ -97,11 +96,6 @@ namespace SerialCommunicate
                 //                  str = str;
                 //              textBox1.AppendText("0x" + str);
             }
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -141,9 +135,9 @@ namespace SerialCommunicate
             }
         }
 
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        private void button4_Click(object sender, EventArgs e)//扫描按键
         {
-
+            SearchAndAddSerialToComboBox(serialPort1, comboBox1);//扫描可用端口
         }
     }
 }

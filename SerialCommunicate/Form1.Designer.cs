@@ -45,6 +45,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.端口 = new System.Windows.Forms.Label();
+            this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
+            this.ovalShape1 = new Microsoft.VisualBasic.PowerPacks.OvalShape();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -65,6 +67,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.comboBox1);
             this.groupBox1.Controls.Add(this.端口);
+            this.groupBox1.Controls.Add(this.shapeContainer1);
             this.groupBox1.Location = new System.Drawing.Point(12, 5);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(183, 212);
@@ -80,6 +83,7 @@
             this.button4.TabIndex = 12;
             this.button4.Text = "扫描";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // panel2
             // 
@@ -163,7 +167,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(54, 171);
+            this.button1.Location = new System.Drawing.Point(76, 171);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(77, 35);
             this.button1.TabIndex = 4;
@@ -197,7 +201,7 @@
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(111, 20);
             this.comboBox2.TabIndex = 3;
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+//            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -225,6 +229,25 @@
             this.端口.Size = new System.Drawing.Size(29, 12);
             this.端口.TabIndex = 0;
             this.端口.Text = "端口";
+            // 
+            // shapeContainer1
+            // 
+            this.shapeContainer1.Location = new System.Drawing.Point(3, 17);
+            this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
+            this.shapeContainer1.Name = "shapeContainer1";
+            this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
+            this.ovalShape1});
+            this.shapeContainer1.Size = new System.Drawing.Size(177, 192);
+            this.shapeContainer1.TabIndex = 13;
+            this.shapeContainer1.TabStop = false;
+            // 
+            // ovalShape1
+            // 
+            this.ovalShape1.FillColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.ovalShape1.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
+            this.ovalShape1.Location = new System.Drawing.Point(32, 159);
+            this.ovalShape1.Name = "ovalShape1";
+            this.ovalShape1.Size = new System.Drawing.Size(22, 23);
             // 
             // textBox1
             // 
@@ -303,6 +326,8 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button4;
+        private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
+        private Microsoft.VisualBasic.PowerPacks.OvalShape ovalShape1;
     }
 }
 
