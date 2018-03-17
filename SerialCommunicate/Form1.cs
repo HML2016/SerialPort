@@ -15,6 +15,9 @@ namespace SerialCommunicate
         public Form1()
         {
             InitializeComponent();
+            /*****************非常重要************************/
+            serialPort1.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);//必须手动添加事件处理程序
+            serialPort1.Encoding = Encoding.GetEncoding("GB2312");                                  //串口接收编码
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
         }
 
@@ -53,9 +56,7 @@ namespace SerialCommunicate
             SearchAndAddSerialToComboBox(serialPort1, comboBox1);//扫描可用端口
             comboBox2.Text = "4800";//波特率默认值
             
-            /*****************非常重要************************/
-            
-            serialPort1.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);//必须手动添加事件处理程序
+           
 
         }
         private void SearchAndAddSerialToComboBox(SerialPort MyPort, ComboBox MyBox)//扫描可用端口
@@ -80,21 +81,19 @@ namespace SerialCommunicate
 
         private void port_DataReceived(object sender, SerialDataReceivedEventArgs e)//串口数据接收事件
         {
-            if (!radioButton3.Checked)//如果接收模式为字符模式
+            if (!radioButton3.Checked)
             {
-                string str = serialPort1.ReadExisting();//字符串方式读
-                textBox1.AppendText(str);//添加内容
+                textBox1.AppendText(serialPort1.ReadExisting());                                //串口类会自动处理汉字，所以不需要特别转换
             }
-            else { //如果接收模式为数值接收
-                byte data;
-                data = (byte)serialPort1.ReadByte();//此处需要强制类型转换，将(int)类型数据转换为(byte类型数据，不必考虑是否会丢失数据
-                string str = Convert.ToString(data, 16).ToUpper();//转换为大写十六进制字符串
-                textBox1.AppendText("0x" + (str.Length == 1 ? "0" + str : str) + " ");//空位补“0”   
-                //上一句等同为：if(str.Length == 1)
-                //                  str = "0" + str;
-                //              else 
-                //                  str = str;
-                //              textBox1.AppendText("0x" + str);
+            else
+            {
+                byte[] data = new byte[serialPort1.BytesToRead];                                //定义缓冲区，因为串口事件触发时有可能收到不止一个字节
+                serialPort1.Read(data, 0, data.Length);
+                foreach (byte Member in data)                                                   //遍历用法
+                {
+                    string str = Convert.ToString(Member, 16).ToUpper();
+                    textBox1.AppendText("0x" + (str.Length == 1 ? "0" + str : str) + " ");
+                }
             }
         }
 
@@ -120,17 +119,24 @@ namespace SerialCommunicate
                     }
                     else
                     {
-                        for (int i = 0; i < (textBox2.Text.Length - textBox2.Text.Length % 2) / 2; i++)//取余运算作用是防止用户输入的字符为奇数个
+                        try
                         {
-                            Data[0] = Convert.ToByte(textBox2.Text.Substring(i * 2, 2), 16);
-                            serialPort1.Write(Data, 0, 1);//循环发送（如果输入字符为0A0BB,则只发送0A,0B）
+                            for (int i = 0; i < (textBox2.Text.Length - textBox2.Text.Length % 2) / 2; i++)//取余运算作用是防止用户输入的字符为奇数个
+                            {
+                                Data[0] = Convert.ToByte(textBox2.Text.Substring(i * 2, 2), 16);
+                                serialPort1.Write(Data, 0, 1);//循环发送（如果输入字符为0A0BB,则只发送0A,0B）
+                            }
+                            if (textBox2.Text.Length % 2 != 0)//剩下一位单独处理
+                            {
+                                Data[0] = Convert.ToByte(textBox2.Text.Substring(textBox2.Text.Length - 1, 1), 16);//单独发送B（0B）
+                                serialPort1.Write(Data, 0, 1);//发送
+                            }
                         }
-                        if (textBox2.Text.Length % 2 != 0)//剩下一位单独处理
+                        catch
                         {
-                            Data[0] = Convert.ToByte(textBox2.Text.Substring(textBox2.Text.Length - 1, 1), 16);//单独发送B（0B）
-                            serialPort1.Write(Data, 0, 1);//发送
+                            MessageBox.Show("数据转换错误，请输入数字。", "错误");
                         }
-                   }
+                    }
                 }
             }
         }
